@@ -3,8 +3,8 @@
     <div class="flex flex-row items-start">
       <div
         v-for="(column, $columnIndex) of board.columns"
-        class="column"
         :key="$columnIndex"
+        class="column"
       >
         <div class="flex items-center mb-2 font-bold">
           {{ column.name }}
@@ -26,6 +26,13 @@
               {{ task.description }}
             </p>
           </div>
+
+          <input
+            type="text"
+            class="block p-2 w-full bg-transparent"
+            placeholder="+ Enter new task"
+            @keyup.enter="createTask($event, column.tasks)"
+          >
         </div>
       </div>
     </div>
@@ -58,6 +65,14 @@ export default {
 
     close () {
       this.$router.push({ name: 'board' })
+    },
+
+    createTask (e, tasks) {
+      this.$store.commit('CREATE_TASK', {
+        tasks,
+        name: e.target.value
+      })
+      e.target.value = ''
     }
   }
 }
